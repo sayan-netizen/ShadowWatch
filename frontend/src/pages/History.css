@@ -1,0 +1,121 @@
+/* History.css — Clinical log with depth */
+.history-stats-strip {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.history-stats-strip__chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-left: 3px solid #740B0B;
+  padding: 0.45rem var(--space-md);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.68rem;
+  background: rgba(116,11,11,0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: border-left-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.history-stats-strip__chip:hover {
+  border-left-color: #9B1414;
+  box-shadow: 0 0 12px rgba(116,11,11,0.12);
+}
+
+.history-stats-strip__chip strong {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: #FFFFFF;
+  margin-right: 3px;
+}
+
+/* Empty state */
+.history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  text-align: center;
+  gap: var(--space-md);
+}
+
+.history-empty__icon {
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(116,11,11,0.35);
+  background: rgba(116,11,11,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #740B0B;
+  box-shadow: 0 0 20px rgba(116,11,11,0.15);
+}
+
+.history-empty__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.7);
+}
+
+.history-empty__desc {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.75);
+  max-width: 320px;
+  letter-spacing: 0.05em;
+}
+
+/* Score chip */
+.score-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.score-chip__bar {
+  display: inline-block;
+  width: 36px;
+  height: 5px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.4);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.score-chip__bar-fill {
+  height: 100%;
+  display: block;
+}
+
+/* URL cell */
+.url-cell { max-width: 280px; }
+
+.url-cell__text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.76rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 100%;
+  color: #C05050;
+}
+
+@media (max-width: 750px) {
+  .history-table-wrap { font-size: 0.78rem; }
+  .neo-table thead th:nth-child(4) { display: none; }
+  .neo-table tbody td:nth-child(4) { display: none; }
+}

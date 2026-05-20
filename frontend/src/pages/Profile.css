@@ -1,0 +1,180 @@
+/* Profile.css — Cinematic glass profile panel */
+.profile-page {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* Avatar block — glass card */
+.profile-avatar-block {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
+  background: rgba(116,11,11,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(116,11,11,0.2);
+  border-left: 4px solid #740B0B;
+  box-shadow: 0 0 30px rgba(116,11,11,0.1), 0 4px 20px rgba(0,0,0,0.4);
+  margin-bottom: var(--space-xl);
+}
+
+.profile-avatar {
+  width: 60px;
+  height: 60px;
+  background: rgba(116,11,11,0.15);
+  border: 1px solid #740B0B;
+  box-shadow: 0 0 16px rgba(116,11,11,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.4rem;
+  color: #740B0B;
+  letter-spacing: 0.05em;
+}
+
+.profile-avatar-block__name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: #FFFFFF;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(116,11,11,0.2);
+}
+
+.profile-avatar-block__meta {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.66rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+}
+
+.profile-avatar-block__badge {
+  display: inline-block;
+  background: rgba(0,200,83,0.08);
+  color: #3EE07B;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 2px 8px;
+  border: 1px solid rgba(0,200,83,0.35);
+  margin-top: 6px;
+  box-shadow: 0 0 8px rgba(0,200,83,0.15);
+}
+
+/* Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* Alerts section */
+.alerts-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar */
+.alerts-list::-webkit-scrollbar { width: 4px; }
+.alerts-list::-webkit-scrollbar-track { background: transparent; }
+.alerts-list::-webkit-scrollbar-thumb { background: rgba(116,11,11,0.4); }
+
+.alert-card {
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 3px solid rgba(255,255,255,0.06);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-md);
+  background: rgba(12,12,12,0.8);
+  transition: border-left-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.alert-card--unread {
+  background: rgba(116,11,11,0.06);
+  border-left-color: #740B0B;
+  box-shadow: inset 0 0 20px rgba(116,11,11,0.04);
+}
+
+.alert-card--unread:hover {
+  border-left-color: #9B1414;
+  box-shadow: 0 0 15px rgba(116,11,11,0.1), inset 0 0 20px rgba(116,11,11,0.06);
+}
+
+.alert-card--read {
+  background: rgba(8,8,8,0.6);
+  opacity: 0.45;
+}
+
+.alert-card__dot {
+  width: 5px;
+  height: 5px;
+  background: #740B0B;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+  box-shadow: 0 0 6px rgba(116,11,11,0.7);
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px rgba(116,11,11,0.7); }
+  50%       { opacity: 0.25; box-shadow: 0 0 2px rgba(116,11,11,0.2); }
+}
+
+.alert-card__dot--read {
+  background: rgba(255,255,255,0.15);
+  box-shadow: none;
+  animation: none;
+}
+
+.alert-card__body { flex: 1; }
+
+.alert-card__message {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-bottom: 3px;
+  color: rgba(255,255,255,0.72);
+}
+
+.alert-card__time {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.04em;
+}
+
+.alerts-empty {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-md);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 880px) {
+  .profile-page { grid-template-columns: 1fr; }
+  .alerts-list { max-height: 360px; }
+}

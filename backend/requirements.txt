@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-Cors==4.0.0
+Flask-Limiter==3.8.0
+Flask-Talisman==1.1.0
+pymongo==4.7.2
+python-dotenv==1.0.1
+PyJWT==2.8.0
+Werkzeug==3.0.3
+marshmallow==3.21.2
+psutil==5.9.8
