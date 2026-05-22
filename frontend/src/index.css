@@ -71,6 +71,17 @@
   --sidebar-width: 260px;
   --navbar-height: 68px;
   --content-max:   1100px;
+
+  /* ── Variables referenced in Endpoints.css (previously undeclared) ── */
+  --border-color:  rgba(255,255,255,0.06);
+  --accent-blue:   #4D7CFE;
+  --accent-green:  #00C853;
+  --accent-yellow: #EAB000;
+  --accent-red:    #740B0B;
+  --bg-dark:       rgba(10,10,10,0.92);
+  --text-bright:   #FFFFFF;
+  --font-code:     'Courier New', Courier, monospace;
+  --font-heading:  var(--font-display);
 }
 
 /* --- RESET --- */

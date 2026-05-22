@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import AppRoutes from './components/AppRoutes';
 import GooeyBackground from './components/GooeyBackground';
+import LightGooeyBackground from './components/LightGooeyBackground';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './index.css';
@@ -15,8 +17,10 @@ const AppContent = () => {
 
   return (
     <>
-      {/* Cinematic atmospheric layer — fixed, z-index 0, behind everything */}
+      {/* Dark mode atmospheric glow — hidden in light mode via CSS */}
       <GooeyBackground />
+      {/* Light mode warm ambient glow — hidden in dark mode via CSS */}
+      <LightGooeyBackground />
 
       <div className="app-shell">
         <Navbar
@@ -56,11 +60,13 @@ const AppContent = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

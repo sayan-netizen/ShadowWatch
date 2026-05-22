@@ -1,8 +1,50 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Menu, X, LogOut, User } from 'lucide-react';
+import { Shield, Menu, X, LogOut, Sun, Moon } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import { ThemeContext } from '../context/ThemeContext';
 import './Navbar.css';
+
+/* ─────────────────────────────────────────────────────
+   ThemeToggle — Premium animated sun/moon pill switch.
+
+   DESIGN:
+   - 56×28px pill, CSS spring transition
+   - Dark: moon icon, right-side orb, deep fill
+   - Light: sun icon, left-side orb, warm amber fill
+   - Smooth spring cubic-bezier (overshoot) on orb
+   - Glow pulse on orb matches current theme accent
+
+   ACCESSIBILITY:
+   - role="switch", aria-checked, aria-label
+   ───────────────────────────────────────────────────── */
+const ThemeToggle = () => {
+  const { isLight, toggleTheme } = useContext(ThemeContext);
+
+  return (
+    <button
+      className={`theme-toggle ${isLight ? 'theme-toggle--light' : 'theme-toggle--dark'}`}
+      onClick={toggleTheme}
+      role="switch"
+      aria-checked={isLight}
+      aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+      title={isLight ? 'Dark mode' : 'Light mode'}
+    >
+      {/* Track */}
+      <span className="theme-toggle__track">
+        {/* Icons embedded in the track background area */}
+        <span className="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+          <Moon size={10} strokeWidth={2.5} />
+        </span>
+        <span className="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+          <Sun size={10} strokeWidth={2.5} />
+        </span>
+        {/* Sliding orb */}
+        <span className="theme-toggle__orb" aria-hidden="true" />
+      </span>
+    </button>
+  );
+};
 
 const Navbar = ({ toggleSidebar, sidebarOpen }) => {
   const { user, logout } = useContext(AuthContext);
@@ -58,6 +100,9 @@ const Navbar = ({ toggleSidebar, sidebarOpen }) => {
 
       {/* Right section */}
       <div className="navbar__right">
+        {/* Theme toggle — always visible */}
+        <ThemeToggle />
+
         {user ? (
           <>
             <div className="navbar__user-chip">

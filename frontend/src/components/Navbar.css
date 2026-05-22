@@ -143,3 +143,143 @@
   .navbar__user-chip { display: none; }
   .navbar__brand-name { font-size: 1rem; }
 }
+
+/* ════════════════════════════════════════════════
+   THEME TOGGLE — Premium animated pill switch
+   ════════════════════════════════════════════════ */
+.theme-toggle {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+.theme-toggle:focus-visible .theme-toggle__track {
+  box-shadow: 0 0 0 2px rgba(116, 11, 11, 0.6);
+}
+
+/* The pill track */
+.theme-toggle__track {
+  position: relative;
+  width: 56px;
+  height: 28px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  transition:
+    background 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 400ms ease;
+  overflow: hidden;
+}
+
+/* Dark mode track */
+.theme-toggle--dark .theme-toggle__track {
+  background: rgba(30, 20, 20, 0.90);
+  border: 1px solid rgba(116, 11, 11, 0.40);
+  box-shadow: 0 0 8px rgba(116, 11, 11, 0.20), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.theme-toggle--dark:hover .theme-toggle__track {
+  box-shadow: 0 0 14px rgba(116, 11, 11, 0.40), inset 0 1px 0 rgba(255,255,255,0.04);
+  border-color: rgba(116, 11, 11, 0.65);
+}
+
+/* Light mode track */
+.theme-toggle--light .theme-toggle__track {
+  background: rgba(245, 235, 220, 0.90);
+  border: 1px solid rgba(157, 106, 58, 0.35);
+  box-shadow: 0 0 8px rgba(157, 106, 58, 0.20), inset 0 1px 0 rgba(255,255,255,0.60);
+}
+
+.theme-toggle--light:hover .theme-toggle__track {
+  box-shadow: 0 0 14px rgba(157, 106, 58, 0.40), inset 0 1px 0 rgba(255,255,255,0.60);
+  border-color: rgba(157, 106, 58, 0.60);
+}
+
+/* Icons (Moon & Sun embedded in track) */
+.theme-toggle__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  transition: opacity 350ms ease, transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.theme-toggle__icon--moon {
+  right: 7px;
+  color: rgba(116, 11, 11, 0.80);
+}
+
+.theme-toggle__icon--sun {
+  left: 7px;
+  color: #9D6A3A;
+}
+
+/* Dark mode: show moon, hide sun */
+.theme-toggle--dark  .theme-toggle__icon--moon { opacity: 0.85; transform: scale(1); }
+.theme-toggle--dark  .theme-toggle__icon--sun  { opacity: 0;    transform: scale(0.5) rotate(-45deg); }
+
+/* Light mode: hide moon, show sun */
+.theme-toggle--light .theme-toggle__icon--moon { opacity: 0;    transform: scale(0.5) rotate(45deg); }
+.theme-toggle--light .theme-toggle__icon--sun  { opacity: 0.90; transform: scale(1); }
+
+/* The sliding orb */
+.theme-toggle__orb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  /* Spring overshoot cubic-bezier for the premium feel */
+  transition:
+    left 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 400ms ease,
+    box-shadow 400ms ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Dark mode: orb right side, deep charcoal */
+.theme-toggle--dark .theme-toggle__orb {
+  left: calc(100% - 24px);
+  background: radial-gradient(circle at 35% 35%, #3A0808, #1A0404);
+  box-shadow:
+    0 0 10px rgba(116, 11, 11, 0.60),
+    0 2px 6px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Light mode: orb left side, warm cream */
+.theme-toggle--light .theme-toggle__orb {
+  left: 3px;
+  background: radial-gradient(circle at 35% 35%, #FFF8F0, #F0DFC0);
+  box-shadow:
+    0 0 10px rgba(157, 106, 58, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.90);
+}
+
+/* Active press feedback */
+.theme-toggle:active .theme-toggle__orb {
+  transform: translateY(-50%) scale(0.88);
+}
+
+/* Mobile: slightly smaller toggle */
+@media (max-width: 600px) {
+  .theme-toggle__track { width: 48px; height: 24px; border-radius: 12px; }
+  .theme-toggle__orb   { width: 18px; height: 18px; }
+  .theme-toggle--dark  .theme-toggle__orb { left: calc(100% - 21px); }
+  .theme-toggle--light .theme-toggle__orb { left: 2px; }
+  .theme-toggle__icon { width: 13px; height: 13px; }
+}
