@@ -101,7 +101,7 @@ const Endpoints = () => {
           Endpoint <span className="title-accent">Monitoring</span>
         </h1>
         </div>
-        <button className="btn btn--blue" onClick={() => setShowModal(true)}>
+        <button className="btn btn--yellow" onClick={() => setShowModal(true)}>
           <Terminal size={18} /> Provision Agent
         </button>
       </div>
@@ -285,7 +285,7 @@ const Endpoints = () => {
                 </div>
                 <button 
                   type="submit" 
-                  className="btn btn--blue btn--full" 
+                  className="btn btn--yellow btn--full" 
                   disabled={registering || !newHostName}
                   style={{ marginTop: '1rem' }}
                 >

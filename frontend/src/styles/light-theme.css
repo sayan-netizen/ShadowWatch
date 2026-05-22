@@ -184,14 +184,25 @@ html[data-theme="light"] .navbar__user-dot {
   50%       { opacity: 0.3; box-shadow: 0 0 2px rgba(157, 106, 58, 0.30); }
 }
 
-html[data-theme="light"] .btn.btn--sm[style*="background: #111"] {
+html[data-theme="light"] .navbar__logout-btn {
   background: rgba(235, 226, 218, 0.90) !important;
   color: #44403C !important;
   border-color: rgba(157, 106, 58, 0.30) !important;
 }
 
-html[data-theme="light"] .btn.btn--sm[style*="background: #111"]:hover {
+html[data-theme="light"] .navbar__logout-btn:hover {
   background: rgba(220, 210, 200, 0.95) !important;
+  color: #1C1917 !important;
+}
+
+html[data-theme="light"] .navbar__login-btn {
+  background: rgba(255, 250, 245, 0.60) !important;
+  color: #44403C !important;
+  border-color: rgba(157, 106, 58, 0.30) !important;
+}
+
+html[data-theme="light"] .navbar__login-btn:hover {
+  background: rgba(255, 250, 245, 0.90) !important;
   color: #1C1917 !important;
 }
 
@@ -768,7 +779,7 @@ html[data-theme="light"] .endpoint-stat-card::after {
 }
 
 html[data-theme="light"] .endpoint-stat-card:hover::after {
-  background: #3B6FCF;
+  background: #9D6A3A;
 }
 
 html[data-theme="light"] .endpoint-stat-card--danger:hover::after {
@@ -935,6 +946,22 @@ html[data-theme="light"] .history-stats-strip__chip:hover {
 
 html[data-theme="light"] .history-stats-strip__chip strong {
   color: #1C1917;
+}
+
+html[data-theme="light"] .history-stats-strip__chip--high,
+html[data-theme="light"] .history-stats-strip__chip--high:hover {
+  border-color: #8B2020;
+}
+html[data-theme="light"] .history-stats-strip__chip--high .chip-icon {
+  color: #8B2020;
+}
+
+html[data-theme="light"] .history-stats-strip__chip--safe,
+html[data-theme="light"] .history-stats-strip__chip--safe:hover {
+  border-color: #1A7040;
+}
+html[data-theme="light"] .history-stats-strip__chip--safe .chip-icon {
+  color: #1A7040;
 }
 
 html[data-theme="light"] .history-empty__icon {

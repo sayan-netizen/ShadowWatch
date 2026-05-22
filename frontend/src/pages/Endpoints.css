@@ -50,7 +50,7 @@
 }
 
 .endpoint-stat-card:hover::after {
-  background: var(--accent-blue);
+  background: var(--accent-red);
 }
 
 .endpoint-stat-card--danger:hover::after {

@@ -36,6 +36,23 @@
   margin-right: 3px;
 }
 
+/* Modifiers for High Risk and Safe boxes — border colors only */
+.history-stats-strip__chip--high,
+.history-stats-strip__chip--high:hover {
+  border-color: #8B2020;
+}
+.history-stats-strip__chip--high .chip-icon {
+  color: #8B2020;
+}
+
+.history-stats-strip__chip--safe,
+.history-stats-strip__chip--safe:hover {
+  border-color: #1A7040;
+}
+.history-stats-strip__chip--safe .chip-icon {
+  color: #1A7040;
+}
+
 /* Empty state */
 .history-empty {
   display: flex;

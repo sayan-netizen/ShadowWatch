@@ -56,13 +56,13 @@ const History = () => {
             <strong>{totalScans}</strong>
             Total Scans
           </div>
-          <div className="history-stats-strip__chip" style={{ background: 'var(--pink)', color: 'white', borderColor: '#000' }}>
-            <ShieldAlert size={16} />
+          <div className="history-stats-strip__chip history-stats-strip__chip--high">
+            <ShieldAlert size={16} className="chip-icon" />
             <strong>{highCount}</strong>
             High Risk
           </div>
-          <div className="history-stats-strip__chip" style={{ background: 'var(--green)', borderColor: '#000' }}>
-            <ShieldCheck size={16} />
+          <div className="history-stats-strip__chip history-stats-strip__chip--safe">
+            <ShieldCheck size={16} className="chip-icon" />
             <strong>{safeCount}</strong>
             Safe
           </div>

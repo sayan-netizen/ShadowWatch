@@ -32,15 +32,15 @@ const ThemeToggle = () => {
     >
       {/* Track */}
       <span className="theme-toggle__track">
-        {/* Icons embedded in the track background area */}
-        <span className="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
-          <Moon size={10} strokeWidth={2.5} />
-        </span>
-        <span className="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
-          <Sun size={10} strokeWidth={2.5} />
-        </span>
         {/* Sliding orb */}
-        <span className="theme-toggle__orb" aria-hidden="true" />
+        <span className="theme-toggle__orb" aria-hidden="true">
+          <span className="theme-toggle__icon theme-toggle__icon--moon">
+            <Moon size={12} strokeWidth={2.5} />
+          </span>
+          <span className="theme-toggle__icon theme-toggle__icon--sun">
+            <Sun size={12} strokeWidth={2.5} />
+          </span>
+        </span>
       </span>
     </button>
   );
@@ -100,9 +100,6 @@ const Navbar = ({ toggleSidebar, sidebarOpen }) => {
 
       {/* Right section */}
       <div className="navbar__right">
-        {/* Theme toggle — always visible */}
-        <ThemeToggle />
-
         {user ? (
           <>
             <div className="navbar__user-chip">
@@ -110,7 +107,7 @@ const Navbar = ({ toggleSidebar, sidebarOpen }) => {
               {user.username}
             </div>
             <button
-              className="btn btn--sm"
+              className="btn btn--sm navbar__logout-btn"
               style={{ background: '#111', color: '#888', borderColor: '#333' }}
               onClick={handleLogout}
             >
@@ -121,7 +118,7 @@ const Navbar = ({ toggleSidebar, sidebarOpen }) => {
         ) : (
           <div className="navbar__auth-links">
             <Link to="/login">
-              <button className="btn btn--sm" style={{ background: 'transparent', color: 'white', borderColor: '#666' }}>
+              <button className="btn btn--sm navbar__login-btn" style={{ background: 'transparent', color: 'white', borderColor: '#666' }}>
                 Login
               </button>
             </Link>
@@ -132,6 +129,9 @@ const Navbar = ({ toggleSidebar, sidebarOpen }) => {
             </Link>
           </div>
         )}
+
+        {/* Theme toggle — always visible */}
+        <ThemeToggle />
       </div>
     </nav>
   );
