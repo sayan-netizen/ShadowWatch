@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: shadowwatch-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: MONGO_URI
+        sync: false          # Set this manually in Render dashboard
+      - key: JWT_SECRET_KEY
+        sync: false          # Set this manually in Render dashboard
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_APP
+        value: run.py
+    healthCheckPath: /api/health
