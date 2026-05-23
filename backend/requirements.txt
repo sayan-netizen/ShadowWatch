@@ -8,4 +8,5 @@ PyJWT==2.8.0
 Werkzeug==3.0.3
 marshmallow==3.21.2
 psutil==5.9.8
+certifi
 gunicorn

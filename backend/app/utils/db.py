@@ -2,10 +2,30 @@ from pymongo import MongoClient
 import os
 import logging
 
+try:
+    import certifi
+    _CA_FILE = certifi.where()
+except ImportError:
+    _CA_FILE = None
+
 # We will initialize this lazily or let it run on import, but we'll use settings if possible.
 # For now, keeping the same pattern to avoid breaking imports, but adding indexing.
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
-client = MongoClient(MONGO_URI)
+
+_is_atlas = MONGO_URI.startswith("mongodb+srv")
+
+try:
+    if _is_atlas and _CA_FILE:
+        client = MongoClient(MONGO_URI, tls=True, tlsCAFile=_CA_FILE)
+    elif _is_atlas:
+        # Fallback: skip certificate verification (less secure, but functional)
+        client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True)
+    else:
+        client = MongoClient(MONGO_URI)
+except Exception as e:
+    logging.error(f"Failed to create MongoDB client: {e}")
+    raise
+
 db = client['phishguard_db']
 
 def get_db():
