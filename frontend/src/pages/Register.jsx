@@ -24,7 +24,14 @@ const Register = () => {
       await register(username, email, password);
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      const data = err.response?.data;
+      // Backend returns field-level errors in `details` (marshmallow ValidationError)
+      if (data?.details && typeof data.details === 'object') {
+        const messages = Object.values(data.details).flat().join(' ');
+        setError(messages || data.message || 'Registration failed. Please try again.');
+      } else {
+        setError(data?.message || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -109,13 +116,16 @@ const Register = () => {
             <input
               id="reg-password"
               type="password"
-              placeholder="Minimum 6 characters"
+              placeholder="Min 8 chars, upper, lower, number, symbol"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="new-password"
-              minLength="6"
+              minLength="8"
               required
             />
+            <p style={{ fontSize: '0.72rem', color: 'var(--color-text-muted, #888)', marginTop: '4px', lineHeight: 1.4 }}>
+              Must be 8+ characters with uppercase, lowercase, a number, and a special character (e.g. <code>!@#$%</code>).
+            </p>
           </div>
 
           <button
