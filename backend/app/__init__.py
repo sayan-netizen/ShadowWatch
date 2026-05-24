@@ -18,14 +18,13 @@ def create_app():
     # Load configuration
     app.config.from_object(get_config())
     
-    # Setup CORS — restrict to the deployed frontend origin in production
-    is_production = os.environ.get('FLASK_ENV', 'development') == 'production'
-    frontend_url = os.environ.get('FRONTEND_URL', '*')
-    cors_origins = [frontend_url] if is_production and frontend_url != '*' else "*"
-    CORS(app, origins=cors_origins, supports_credentials=True)
+    # Setup CORS — allow all origins (JWT is sent in Authorization header, not cookies,
+    # so wildcard CORS is safe and avoids preflight rejections on Render).
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     
-    # Setup Security Headers (CSP, HSTS, etc.)
-    # force_https is enabled in production (Render terminates TLS at the edge).
+    # Setup Security Headers
+    # force_https=False: Render terminates TLS at the load balancer, so forcing
+    # HTTPS inside Flask causes redirect loops. Render enforces HTTPS externally.
     csp = {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
@@ -33,7 +32,7 @@ def create_app():
         'font-src': ["'self'", "fonts.gstatic.com", "data:"],
         'img-src': ["'self'", "data:", "blob:"]
     }
-    Talisman(app, content_security_policy=csp, force_https=is_production)
+    Talisman(app, content_security_policy=csp, force_https=False)
     
     # Setup Rate Limiting
     limiter.init_app(app)
