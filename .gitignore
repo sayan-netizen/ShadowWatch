@@ -1,0 +1,20 @@
+# === Credentials — NEVER commit these ===
+**/.env
+**/.env.local
+.env
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/venv/
+**/*.log
+
+# Node
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/build/
+
+# OS
+.DS_Store
+Thumbs.db

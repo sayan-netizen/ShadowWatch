@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -17,12 +18,14 @@ def create_app():
     # Load configuration
     app.config.from_object(get_config())
     
-    # Setup CORS
-    CORS(app)
+    # Setup CORS — restrict to the deployed frontend origin in production
+    is_production = os.environ.get('FLASK_ENV', 'development') == 'production'
+    frontend_url = os.environ.get('FRONTEND_URL', '*')
+    cors_origins = [frontend_url] if is_production and frontend_url != '*' else "*"
+    CORS(app, origins=cors_origins, supports_credentials=True)
     
     # Setup Security Headers (CSP, HSTS, etc.)
-    # In development, we might want to relax some rules, but Talisman provides good defaults.
-    # Allowing inline scripts/styles for React dev server compatibility if needed.
+    # force_https is enabled in production (Render terminates TLS at the edge).
     csp = {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
@@ -30,7 +33,7 @@ def create_app():
         'font-src': ["'self'", "fonts.gstatic.com", "data:"],
         'img-src': ["'self'", "data:", "blob:"]
     }
-    Talisman(app, content_security_policy=csp, force_https=False)
+    Talisman(app, content_security_policy=csp, force_https=is_production)
     
     # Setup Rate Limiting
     limiter.init_app(app)

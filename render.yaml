@@ -3,10 +3,13 @@ services:
   - type: web
     name: shadowwatch-backend
     runtime: python
+    plan: free
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
       - key: MONGO_URI
         sync: false          # Set manually in Render dashboard
       - key: JWT_SECRET_KEY
@@ -15,12 +18,18 @@ services:
         value: production
       - key: FLASK_APP
         value: run.py
+      - key: FRONTEND_URL
+        fromService:
+          name: shadowwatch-frontend
+          type: web
+          property: host      # Injected as https://shadowwatch-frontend.onrender.com
     healthCheckPath: /api/health
 
   # ── Frontend (React/Vite Static Site) ──────────────────────────────────────
   - type: web
     name: shadowwatch-frontend
     runtime: static
+    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -29,7 +38,7 @@ services:
         fromService:
           name: shadowwatch-backend
           type: web
-          property: host          # Render auto-fills the backend's URL here
+          property: hostport  # Resolves to https://shadowwatch-backend.onrender.com
     routes:
       - type: rewrite
         source: /*
