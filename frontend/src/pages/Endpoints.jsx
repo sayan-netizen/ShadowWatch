@@ -272,10 +272,10 @@ const Endpoints = () => {
                       <span /><span /><span />
                     </div>
                   </div>
-                  <pre className="cmd-block__code">{`python agent/monitor.py --server ${window.location.origin.replace('5173', '5000')} --api-key ${registrationResult.api_key}`}</pre>
+                  <pre className="cmd-block__code">{`python agent/monitor.py --server ${(import.meta.env.VITE_API_URL ?? 'http://localhost:5000').replace(/\/$/, '')} --api-key ${registrationResult.api_key}`}</pre>
                   <button
                     className={`cmd-copy-btn ${copiedField === 'cmd' ? 'cmd-copy-btn--copied' : ''}`}
-                    onClick={() => copyToClipboard(`python agent/monitor.py --server ${window.location.origin.replace('5173', '5000')} --api-key ${registrationResult.api_key}`, 'cmd')}
+                    onClick={() => copyToClipboard(`python agent/monitor.py --server ${(import.meta.env.VITE_API_URL ?? 'http://localhost:5000').replace(/\/$/, '')} --api-key ${registrationResult.api_key}`, 'cmd')}
                     title="Copy command"
                   >
                     {copiedField === 'cmd' ? <Check size={14} /> : <Copy size={14} />}
