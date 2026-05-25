@@ -15,13 +15,19 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 _is_atlas = MONGO_URI.startswith("mongodb+srv")
 
 try:
+    _mongo_kwargs = {
+        # Fail fast if Atlas is unreachable rather than hanging gunicorn workers.
+        # serverSelectionTimeoutMS: how long to wait to find a usable server (5 s).
+        # socketTimeoutMS: max time for a single DB operation (10 s).
+        "serverSelectionTimeoutMS": 5000,
+        "socketTimeoutMS":          10000,
+    }
     if _is_atlas and _CA_FILE:
-        client = MongoClient(MONGO_URI, tls=True, tlsCAFile=_CA_FILE)
+        client = MongoClient(MONGO_URI, tls=True, tlsCAFile=_CA_FILE, **_mongo_kwargs)
     elif _is_atlas:
-        # Fallback: skip certificate verification (less secure, but functional)
-        client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True)
+        client = MongoClient(MONGO_URI, tls=True, tlsAllowInvalidCertificates=True, **_mongo_kwargs)
     else:
-        client = MongoClient(MONGO_URI)
+        client = MongoClient(MONGO_URI, **_mongo_kwargs)
 except Exception as e:
     logging.error(f"Failed to create MongoDB client: {e}")
     raise

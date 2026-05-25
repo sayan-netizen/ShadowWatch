@@ -252,17 +252,20 @@ def ingest_telemetry(host: dict, user_id: str, payload: dict) -> dict:
     threat  = score_telemetry(payload)
 
     telemetry_doc = {
-        "host_id":          host_id,
-        "user_id":          user_id,
-        "hostname":         host.get("hostname", "unknown"),
-        "processes":        payload.get("processes", []),
-        "metrics":          payload.get("metrics", {}),
-        "indicators":       payload.get("indicators", []),
-        "raw_score":        threat["raw_score"],
-        "threat_level":     threat["threat_level"],
-        "rules_fired":      threat["rules_fired"],
+        "host_id":           host_id,
+        "user_id":           user_id,
+        "hostname":          host.get("hostname", "unknown"),
+        # NOTE: Raw process list is NOT persisted — only scored summary.
+        # Storing 200 processes per snapshot (~50 KB/doc) causes Atlas write
+        # timeouts on Render's free tier and inflates the collection rapidly.
+        "metrics":           payload.get("metrics", {}),
+        "indicators":        payload.get("indicators", []),
+        "process_count":     len(payload.get("processes", [])),
+        "raw_score":         threat["raw_score"],
+        "threat_level":      threat["threat_level"],
+        "rules_fired":       threat["rules_fired"],
         "flagged_processes": threat["flagged_processes"],
-        "timestamp":        now,
+        "timestamp":         now,
     }
 
     result = db.endpoint_telemetry.insert_one(telemetry_doc)
