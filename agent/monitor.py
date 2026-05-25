@@ -206,21 +206,52 @@ def post_telemetry(server: str, api_key: str, payload: dict, retry: int = 0) -> 
     }
 
     try:
-        resp = requests.post(url, json=payload, headers=headers, timeout=15)
+        resp = requests.post(url, json=payload, headers=headers, timeout=15,
+                             allow_redirects=False)  # Prevent HTTP→HTTPS redirect that silently drops POST body
+
+        # Detect redirect — almost always an HTTP→HTTPS misconfiguration
+        if resp.is_redirect or resp.status_code in (301, 302, 307, 308):
+            location = resp.headers.get("Location", "?")
+            log.warning(
+                f"Server redirected (HTTP {resp.status_code}) to {location!r}. "
+                f"Update --server to use HTTPS to avoid losing the POST body."
+            )
+            return False
+
+        # Safe body read — empty body returns '' and never raises
+        try:
+            body = resp.text
+        except Exception:
+            body = ""
+
+        # Guard: Render free-tier returns empty 502/503 during cold-start wake-up
+        if not body.strip():
+            log.warning(
+                f"Server returned HTTP {resp.status_code} with an empty body. "
+                f"Likely a cold-start on Render's free tier — will retry."
+            )
+            return False
 
         if resp.status_code == 200:
-            data = resp.json()
+            try:
+                data = resp.json()
+            except Exception as json_err:
+                log.error(
+                    f"Backend returned HTTP 200 but body is not valid JSON "
+                    f"({json_err}). Raw response: {body[:400]!r}"
+                )
+                return False
             level = data.get("data", {}).get("threat_level", "UNKNOWN")
             score = data.get("data", {}).get("raw_score", 0)
             log.info(f"Telemetry accepted — threat_level={level}, score={score}")
             return True
 
         elif resp.status_code in (401, 403):
-            log.error(f"Authentication error ({resp.status_code}): check your API key. Agent stopping.")
+            log.error(f"Authentication error ({resp.status_code}): {body[:200]!r}. Check your API key. Agent stopping.")
             sys.exit(1)   # Fatal — don't retry auth failures
 
         else:
-            log.warning(f"Backend returned HTTP {resp.status_code}: {resp.text[:200]}")
+            log.warning(f"Backend returned HTTP {resp.status_code}: {body[:200]}")
             return False
 
     except requests.exceptions.ConnectionError:

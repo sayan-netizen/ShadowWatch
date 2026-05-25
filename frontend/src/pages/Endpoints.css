@@ -251,12 +251,155 @@
 
 /* API Key Display Box */
 .api-key-box {
-  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.55);
   border: 1px dashed var(--accent-blue);
-  padding: 1rem;
-  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  margin: 0.5rem 0 0.25rem;
+  border-radius: 4px;
+}
+
+.api-key-text {
+  flex: 1;
   word-break: break-all;
   font-family: var(--font-code);
+  font-size: 0.85rem;
   color: var(--accent-blue);
-  text-align: center;
+  line-height: 1.5;
+}
+
+.key-warning {
+  font-size: 0.8rem;
+  color: var(--accent-yellow);
+  margin: 0.4rem 0 0;
+  opacity: 0.85;
+}
+
+/* Section label */
+.deploy-section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+/* Copy button (inline, small) */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: rgba(0, 136, 255, 0.08);
+}
+
+.copy-btn--copied {
+  border-color: var(--accent-green) !important;
+  color: var(--accent-green) !important;
+  background: rgba(0, 200, 83, 0.1) !important;
+}
+
+/* Terminal-style command block */
+.cmd-block {
+  position: relative;
+  background: #0a0a0f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+
+.cmd-block__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.cmd-block__shell {
+  font-family: var(--font-code);
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+.cmd-block__dots {
+  display: flex;
+  gap: 5px;
+}
+
+.cmd-block__dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.cmd-block__code {
+  margin: 0;
+  padding: 0.9rem 1rem 0.9rem;
+  font-family: var(--font-code);
+  font-size: 0.82rem;
+  color: #e0e0e0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.6;
+  padding-right: 90px; /* room for the copy button */
+}
+
+/* Copy button overlaid on the command block */
+.cmd-copy-btn {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(20, 20, 30, 0.9);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(4px);
+}
+
+.cmd-copy-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: rgba(0, 136, 255, 0.12);
+}
+
+.cmd-copy-btn--copied {
+  border-color: var(--accent-green) !important;
+  color: var(--accent-green) !important;
+  background: rgba(0, 200, 83, 0.1) !important;
 }

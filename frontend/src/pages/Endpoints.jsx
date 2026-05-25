@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
-import { Server, ShieldAlert, Activity, CheckCircle, AlertTriangle, X, Terminal, Clock } from 'lucide-react';
+import { Server, ShieldAlert, Activity, CheckCircle, AlertTriangle, X, Terminal, Clock, Copy, Check } from 'lucide-react';
 import './Endpoints.css';
 
 const Endpoints = () => {
@@ -17,6 +17,7 @@ const Endpoints = () => {
   const [registrationResult, setRegistrationResult] = useState(null);
   const [registering, setRegistering] = useState(false);
   const [error, setError] = useState('');
+  const [copiedField, setCopiedField] = useState(null); // 'key' | 'cmd'
 
   const fetchData = async () => {
     try {
@@ -79,6 +80,14 @@ const Endpoints = () => {
     setNewHostName('');
     setNewOsInfo('');
     setError('');
+    setCopiedField(null);
+  };
+
+  const copyToClipboard = (text, field) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
+    });
   };
 
   if (loading && !statusData) {
@@ -229,31 +238,55 @@ const Endpoints = () => {
             
             {registrationResult ? (
               <div>
-                <div className="alert-banner alert-banner--success" style={{ marginBottom: '1rem' }}>
+                <div className="alert-banner alert-banner--success" style={{ marginBottom: '1.25rem' }}>
                   <CheckCircle size={18} /> Host Registered Successfully
                 </div>
-                <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>
-                  Deploy the ShadowWatch agent on <strong>{newHostName}</strong> using the following command. 
-                  <br/><br/>
-                  <span style={{ color: 'var(--accent-red)', fontWeight: 'bold' }}>WARNING:</span> This API key will only be shown once.
+
+                <p style={{ marginBottom: '1.25rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                  Deploy the ShadowWatch agent on <strong style={{ color: 'var(--text-bright)' }}>{newHostName}</strong> using the command below.
                 </p>
-                
+
+                {/* API Key */}
+                <div className="deploy-section-label">One-Time API Key</div>
                 <div className="api-key-box">
-                  {registrationResult.api_key}
+                  <span className="api-key-text">{registrationResult.api_key}</span>
+                  <button
+                    className={`copy-btn ${copiedField === 'key' ? 'copy-btn--copied' : ''}`}
+                    onClick={() => copyToClipboard(registrationResult.api_key, 'key')}
+                    title="Copy API key"
+                  >
+                    {copiedField === 'key' ? <Check size={14} /> : <Copy size={14} />}
+                    {copiedField === 'key' ? 'Copied!' : 'Copy'}
+                  </button>
                 </div>
-                
-                <div className="form-group">
-                  <label className="form-label">Deployment Command (Powershell/CMD)</label>
-                  <textarea 
-                    className="form-input" 
-                    readOnly 
-                    rows="2" 
-                    style={{ fontFamily: 'var(--font-code)', fontSize: '0.85rem' }}
-                    value={`python monitor.py --server ${window.location.origin.replace('5173', '5000')} --api-key ${registrationResult.api_key}`}
-                  />
+                <p className="key-warning">
+                  ⚠ This key is shown <strong>once only</strong>. Store it securely before closing.
+                </p>
+
+                {/* Deployment Command */}
+                <div className="deploy-section-label" style={{ marginTop: '1.25rem' }}>Deployment Command (PowerShell / CMD)</div>
+                <div className="cmd-block">
+                  <div className="cmd-block__bar">
+                    <span className="cmd-block__shell">PS &gt;</span>
+                    <div className="cmd-block__dots">
+                      <span /><span /><span />
+                    </div>
+                  </div>
+                  <pre className="cmd-block__code">{`python agent/monitor.py --server ${window.location.origin.replace('5173', '5000')} --api-key ${registrationResult.api_key}`}</pre>
+                  <button
+                    className={`cmd-copy-btn ${copiedField === 'cmd' ? 'cmd-copy-btn--copied' : ''}`}
+                    onClick={() => copyToClipboard(`python agent/monitor.py --server ${window.location.origin.replace('5173', '5000')} --api-key ${registrationResult.api_key}`, 'cmd')}
+                    title="Copy command"
+                  >
+                    {copiedField === 'cmd' ? <Check size={14} /> : <Copy size={14} />}
+                    {copiedField === 'cmd' ? 'Copied!' : 'Copy'}
+                  </button>
                 </div>
-                
-                <button className="btn btn--primary btn--full" onClick={closeAndResetModal} style={{ marginTop: '1rem' }}>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                  Ensure <code style={{ color: 'var(--accent-blue)' }}>psutil</code> and <code style={{ color: 'var(--accent-blue)' }}>requests</code> are installed: <code style={{ color: 'var(--text-muted)' }}>pip install psutil requests</code>
+                </p>
+
+                <button className="btn btn--primary btn--full" onClick={closeAndResetModal} style={{ marginTop: '1.5rem' }}>
                   Done
                 </button>
               </div>
