@@ -36,7 +36,7 @@ services:
         fromService:
           name: shadowwatch-backend
           type: web
-          property: hostport  # Resolves to https://shadowwatch-backend.onrender.com
+          property: host      # Resolves to https://shadowwatch-backend.onrender.com
     routes:
       - type: rewrite
         source: /*

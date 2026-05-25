@@ -43,8 +43,8 @@ endpoint_bp = Blueprint("endpoint", __name__)
 # ---------------------------------------------------------------------------
 
 @endpoint_bp.route("/register", methods=["POST"])
-@token_required
 @limiter.limit("20 per hour")
+@token_required
 def register_endpoint(current_user):
     """
     Register a new monitored host under the authenticated user's account.
